@@ -14,7 +14,7 @@ const tierTxt = (p) => p.filtration || (tier(p) === 1 ? 'air purifier (type not 
 
 // Pins: [x%, y%, kind] placed on features visible in each photo AND present in the data.
 const PINS = {
-  kobra: [[56, 33, 'display'], [47, 17, 'ace'], [51, 43, 'head']],
+  kobra: [[56, 33, 'display'], [47, 17, 'ace'], [51, 47, 'head']],
   k2: [[55, 17, 'display'], [51, 31, 'head'], [44, 71, 'plate']],
   creator5: [[50, 20, 'cover'], [42, 49, 'head'], [45, 85, 'plate']],
   max4: [[20, 15, 'display'], [51, 27, 'head'], [37, 74, 'plate']],
