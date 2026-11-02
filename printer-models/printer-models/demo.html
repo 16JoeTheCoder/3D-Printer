@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Printer models demo</title>
+<link rel="stylesheet" href="printer-models.css">
+<style>
+  body { margin: 0; background: #0E1320; font-family: system-ui, sans-serif; color: #eef1f6; }
+  main { display: grid; gap: 32px; max-width: 920px; margin: 0 auto; padding: 24px 16px 48px; }
+  h2 { margin: 0 0 4px; font-size: 20px; }
+  .tag { color: #9aa4b5; font-size: 13px; }
+  .card { padding: 16px; border: 1px solid rgba(238,241,246,.14); border-radius: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <!-- No-JS fallback: the <img> is replaced when the module mounts. -->
+  <section class="card"><h2>Anycubic Kobra S1 Max</h2><div data-printer="kobra-s1-max"><img src="svg/kobra-s1-max.svg" alt="Kobra S1 Max schematic model" width="400"></div></section>
+  <section class="card"><h2>Creality K2 Pro</h2><div data-printer="k2-pro"><img src="svg/k2-pro.svg" alt="K2 Pro schematic model" width="400"></div></section>
+  <section class="card"><h2>Flashforge Creator 5 Pro</h2><div data-printer="creator-5-pro"><img src="svg/creator-5-pro.svg" alt="Creator 5 Pro schematic model" width="400"></div></section>
+  <section class="card"><h2>QIDI Max4</h2><div data-printer="qidi-max4"><img src="svg/qidi-max4.svg" alt="QIDI Max4 schematic model" width="400"></div></section>
+  <section class="card"><h2>QIDI Plus5</h2><div data-printer="qidi-plus5"><img src="svg/qidi-plus5.svg" alt="QIDI Plus5 schematic model" width="400"></div></section>
+</main>
+<script type="module">
+  import { mountAll } from './printer-models.js';
+  mountAll();
+</script>
+</body>
+</html>

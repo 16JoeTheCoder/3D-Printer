@@ -1,0 +1,117 @@
+// printer-specs.js: geometry + verified facts for each printer. Edit here, not in the engine.
+// Units: mm. dims = outer body (W x D x H) without side/top add-ons. build = [x, y, z] print volume.
+// Proportions come from manufacturer figures where stated (see `dimsNote`); feature positions are schematic.
+
+export const FEATURES = {
+  volume: 'Build volume',
+  chamber: 'Heated chamber',
+  toolhead: 'Toolhead',
+  colour: 'Multi-colour',
+  camera: 'Camera',
+  filter: 'Air filter',
+  screen: 'Touchscreen',
+  spool: 'Spool holder',
+  chute: 'Discharge chute',
+  sensors: 'Door sensors',
+  footprint: 'Footprint and power',
+};
+
+// Hardware layers start visible; overlays (volume, chamber, footprint) start hidden.
+export const DEFAULT_ON = { toolhead: 1, colour: 1, camera: 1, filter: 1, screen: 1, spool: 1, chute: 1, sensors: 1 };
+
+export const PRINTERS = {
+  'kobra-s1-max': {
+    name: 'Anycubic Kobra S1 Max', tag: 'Local', accent: '#378ADD',
+    dims: { W: 540, D: 550, H: 600 }, dimsNote: 'estimated (maker gives no outer size)',
+    base: 100, post: 16, build: [350, 350, 350], heads: 1, screenIn: 4.3, camera: 1,
+    glass: { front: 1, top: 1 },
+    colour: { w: 300, d: 260, h: 170, slots: 4 }, filter: { w: 44, h: 240 }, chute: 1,
+    labels: { colour: 'ACE 2 Pro' },
+    info: {
+      volume: '350 x 350 x 350 mm, the largest build in the local tier.',
+      chamber: '65 °C active chamber. Hotend 350 °C with a hardened-steel 0.4 mm nozzle.',
+      toolhead: 'CoreXY motion up to 600 mm/s and 20,000 mm/s². LeviQ 3.0 auto-levelling.',
+      colour: 'ACE 2 Pro (Combo): up to 16 colours. The standard version has no colour system.',
+      camera: '720p AI camera with spaghetti and entanglement detection.',
+      filter: 'Activated-carbon air filtration.',
+      screen: '4.3" touchscreen. Wi-Fi 6, Ethernet and the Anycubic app.',
+      chute: 'Left discharge chute, as listed by the maker.',
+      footprint: '25.7 kg. 2200 W at 220 V, so check the room circuit. Outer size is estimated.',
+    },
+  },
+  'k2-pro': {
+    name: 'Creality K2 Pro', tag: 'Local', accent: '#1D9E75',
+    dims: { W: 400, D: 505, H: 660 }, dimsNote: 'maker lists 445 x 505 x 850 mm with CFS and purifier',
+    base: 90, post: 22, build: [300, 300, 300], heads: 1, screenIn: 4, camera: 1,
+    glass: { front: 1, left: 1, right: 1, top: 1 },
+    colour: { w: 330, d: 300, h: 190, slots: 4 }, filter: { w: 45, h: 220 },
+    labels: { colour: 'CFS', filter: 'Air purifier' },
+    info: {
+      volume: '300 x 300 x 300 mm.',
+      chamber: '60 °C active chamber. Bed to 110 °C, hotend to 300 °C.',
+      toolhead: 'Dual-gear extruder, up to 600 mm/s and 20,000 mm/s². Full-auto levelling.',
+      colour: 'CFS (Combo): up to 4 units for 16 colours. The CFS lists PLA-CF only.',
+      camera: 'AI monitor and calibration cameras with tangle detection.',
+      filter: 'Built-in air purifier.',
+      screen: '4" colour touchscreen. USB, Ethernet and Wi-Fi.',
+      footprint: '445 x 505 x 850 mm (maker figure). 23.7 kg. 1300 W, 100-240 V.',
+    },
+  },
+  'creator-5-pro': {
+    name: 'Flashforge Creator 5 Pro', tag: 'Local', accent: '#D85A30',
+    dims: { W: 470, D: 443, H: 500 }, dimsNote: 'maker lists 520 x 443 x 710 mm incl. filament tube',
+    base: 90, post: 14, build: [256, 256, 256], heads: 4, screenIn: 4, camera: 1,
+    glass: { front: 1 }, spools: 4, sensors: 1,
+    filter: { w: 46, h: 260 },
+    labels: { filter: 'HEPA13 filter', toolhead: '4 toolheads' },
+    info: {
+      volume: '256 x 256 x 256 mm.',
+      chamber: '65 °C active chamber. Bed to 120 °C, hotend to 320 °C.',
+      toolhead: 'Four independent toolheads (FlashSwap) with hardened-steel nozzles. 300 mm/s print, 600 mm/s travel.',
+      camera: '720p camera for monitoring.',
+      filter: 'HEPA13 plus activated carbon.',
+      screen: '4" 800 x 480 touchscreen.',
+      spool: 'Filament feeds through a tube. Spool positions are schematic.',
+      sensors: 'Front-door and top-cover detection.',
+      footprint: '520 x 443 x 710 mm including filament tube. 18 kg. 1200 W.',
+    },
+  },
+  'qidi-max4': {
+    name: 'QIDI Max4', tag: 'Import', accent: '#7F77DD',
+    dims: { W: 520, D: 578, H: 612 }, dimsNote: 'maker lists 558 x 578 x 612 mm',
+    base: 120, post: 24, build: [390, 390, 340], heads: 1, screenIn: 5, camera: 1,
+    glass: { front: 1, top: 1 }, spools: 1,
+    colour: { w: 260, d: 300, h: 260, slots: 4, ghost: 1, pos: 'left' }, filter: { w: 40, h: 250 },
+    labels: { colour: 'QIDI Box (optional)' },
+    info: {
+      volume: '390 x 390 x 340 mm, the largest build here.',
+      chamber: 'PTC chamber heating to 65 °C. Hotend 370 °C, bimetal nozzle.',
+      toolhead: 'CoreXY, 800 mm/s toolhead speed and 30,000 mm/s². Hands-free load-cell levelling.',
+      colour: 'QIDI Box is supported and drawn as an optional add-on. Colour count not stated.',
+      camera: '1080p camera with AI detection.',
+      filter: 'G3 plus H12 HEPA plus carbon.',
+      screen: '5" 800 x 480 touchscreen.',
+      spool: 'Spool holder position is schematic.',
+      footprint: '558 x 578 x 612 mm. 40 kg (Combo 46.5 kg). Heaters rated 150 W + 500 W chamber + 700 W bed.',
+    },
+  },
+  'qidi-plus5': {
+    name: 'QIDI Plus5', tag: 'Import', accent: '#D4537E',
+    dims: { W: 460, D: 488, H: 558 }, dimsNote: 'maker lists 500 x 488 x 558 mm',
+    base: 100, post: 20, build: [320, 320, 300], heads: 1, screenIn: 4, camera: 1,
+    glass: { front: 1, top: 1 }, spools: 1,
+    colour: { w: 240, d: 280, h: 240, slots: 4, ghost: 1, pos: 'left' }, filter: { w: 40, h: 240 },
+    labels: { colour: 'QIDI Box (optional)' },
+    info: {
+      volume: '320 x 320 x 300 mm.',
+      chamber: '65 °C independent chamber heater. Hotend 370 °C, bed to 120 °C.',
+      toolhead: 'CoreXY, 600 mm/s up to 20,000 mm/s² with 9 mm 1.5GT belts.',
+      colour: 'QIDI Box compatible, drawn as an optional add-on. Colour count not stated.',
+      camera: '1080p camera with AI detection. Tangle detection needs the QIDI Box.',
+      filter: 'G3 plus H12 HEPA plus carbon.',
+      screen: '4" 800 x 480 touchscreen.',
+      spool: 'Spool holder position is schematic.',
+      footprint: '500 x 488 x 558 mm. 29 kg net. 150 W + 550 W chamber + 500 W bed rated.',
+    },
+  },
+};

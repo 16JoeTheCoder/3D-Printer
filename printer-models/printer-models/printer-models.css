@@ -1,0 +1,21 @@
+/* printer-models.css: styles for the interactive viewer. Override the --pm-* variables to retheme. */
+.pm { --pm-text: #eef1f6; --pm-muted: #9aa4b5; --pm-line: rgba(238, 241, 246, .22); color: var(--pm-text); font: 14px/1.5 system-ui, sans-serif; }
+.pm-stage { touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; border-radius: 12px; outline-offset: 2px; }
+.pm-stage:active { cursor: grabbing; }
+.pm-stage:focus-visible, .pm-chip:focus-visible { outline: 2px solid var(--pm-accent); }
+.pm-stage svg { display: block; max-height: 62vh; margin: 0 auto; }
+.pm-stage [data-l] { cursor: pointer; }
+.pm-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
+.pm-chip { min-height: 44px; padding: 0 14px; border: 1px solid var(--pm-line); border-radius: 999px; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+.pm-chip[aria-pressed="true"] { border-color: var(--pm-accent); box-shadow: inset 0 0 0 1px var(--pm-accent); }
+.pm-chip.pm-alt { color: var(--pm-muted); }
+.pm-chip.pm-alt[aria-pressed="true"] { color: var(--pm-text); }
+.pm-chip:disabled { opacity: .4; cursor: not-allowed; }
+.pm-note { min-height: 3em; margin: 12px 0 0; color: var(--pm-muted); }
+.pm-note strong { color: var(--pm-text); font-weight: 600; }
+.pm-heat { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .pm-heat { animation: pm-rise 2.2s ease-in infinite; }
+  @keyframes pm-rise { 0% { opacity: 0; transform: translateY(14px); } 30% { opacity: .9; } 100% { opacity: 0; transform: translateY(-16px); } }
+}
+@media (prefers-reduced-motion: reduce) { .pm-heat { opacity: .85; } }
