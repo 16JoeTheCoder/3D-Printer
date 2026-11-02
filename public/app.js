@@ -63,7 +63,7 @@ const race = (m) => {
   const max = m === 'a' ? 4 : Math.max(...rows.map((r) => +r.dataset[m]));
   const order = [...rows].sort((a, b) => b.dataset[m] - a.dataset[m] || a.dataset.i - b.dataset.i);
   order.forEach((li, r) => {
-    li.style.setProperty('--r', r); li.style.setProperty('--v', +li.dataset[m] / max);
+    li.classList.toggle('lead', r === 0); li.style.setProperty('--r', r); li.style.setProperty('--v', +li.dataset[m] / max);
     const val = $('.val', li);
     if (m === 'a') val.textContent = li.dataset.at;
     else { const to = +li.dataset[m], from = parseFloat(val.textContent) || 0, dec = m === 'b' ? 1 : 0, u = UNIT[m]; if (RM || !/^[\d.]+/.test(val.textContent)) val.textContent = to.toFixed(dec) + u; else tween({ set textContent(v) { val.textContent = v + u; } }, from, to, dec, 700); }

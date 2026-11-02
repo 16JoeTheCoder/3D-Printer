@@ -101,7 +101,7 @@ const byBuild = [...P].sort((a, b) => litres(b) - litres(a));
 const maxL = litres(byBuild[0]);
 const race = P.map((p, i) => {
   const r = byBuild.indexOf(p);
-  return `<li data-i="${i}" data-b="${litres(p)}" data-c="${p.chamberC}" data-s="${p.speedMms}" data-a="${tier(p)}" data-at="${e(tierTxt(p))}" style="--r:${r};--v:${litres(p) / maxL}"><span class="rn">${e(p.short)}</span><span class="val">${litres(p)} L</span><span class="bar"><i></i></span></li>`;
+  return `<li data-i="${i}" data-b="${litres(p)}" data-c="${p.chamberC}" data-s="${p.speedMms}" data-a="${tier(p)}" data-at="${e(tierTxt(p))}" class="${r === 0 ? 'lead' : ''}" style="--r:${r};--v:${litres(p) / maxL}"><span class="rn">${e(p.short)}</span><span class="val">${litres(p)} L</span><span class="bar"><i></i></span></li>`;
 }).join('');
 
 const html = `<!doctype html>
@@ -110,38 +110,39 @@ const html = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>STJBS Printer Shortlist</title>
-<meta name="description" content="Five 3D printers for STJBS Jakarta's first school printer: what makes each one stand out, with verified specs.">
-<meta name="theme-color" content="#0D0E10">
+<meta name="description" content="Five 3D printers for STJBS Jakarta's first school printer: what makes each one stand out, with specs from manufacturer pages.">
+<meta name="theme-color" content="#FFFFFF">
 <script>document.documentElement.className='js'</script>
-<link rel="preload" href="fonts/bricolage.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/franklin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/caladea-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="top"><a class="mark" href="#top"><i></i>STJBS<span> Printers</span></a>
+<header class="top"><a class="mark" href="#top"><i></i>STJBS<span> Printer shortlist</span></a>
 <nav aria-label="Sections"><a href="#race">Race</a><a href="#pick">Pick</a><a href="#compare">Compare</a></nav></header>
 <main id="top">
 <div class="reel">${P.map(slide).join('')}</div>
 
-<section class="dark" id="race"><div class="wrap">
+<section class="sec" id="race"><div class="wrap">
   <p class="eyebrow">Metric race</p><h2>Who leads, on which number?</h2>
   <div class="chips needs-js" role="group" aria-label="Metric"><button class="chip" data-m="b" aria-pressed="true">Build volume</button><button class="chip" data-m="c" aria-pressed="false">Chamber temp</button><button class="chip" data-m="s" aria-pressed="false">Speed</button><button class="chip" data-m="a" aria-pressed="false">Air filtration</button></div>
   <ol class="race" aria-label="Ranking">${race}</ol>
   <p class="note" id="race-note" aria-live="polite">Build volume = X × Y × Z in litres. Prices are never ranked.</p>
 </div></section>
 
-<section class="dark pick needs-js" id="pick"><div class="wrap">
+<section class="sec needs-js" id="pick"><div class="wrap">
   <p class="eyebrow">A starting point, not a verdict</p><h2>What matters most?</h2>
   <div class="chips" role="group" aria-label="Priority"><button class="chip" data-p="big" aria-pressed="false">Big parts</button><button class="chip" data-p="safe" aria-pressed="false">Classroom safety</button><button class="chip" data-p="colour" aria-pressed="false">Many colours</button></div>
   <p class="note" id="pick-out" aria-live="polite">Pick one. Matching is by spec rules only.</p>
 </div></section>
 
 <section class="compare" id="compare"><div class="wrap">
-  <p class="eyebrow dk">Compare</p><h2>Five printers, one page</h2>
+  <p class="eyebrow">Compare</p><h2>Five printers, one page</h2>
   <div class="filters needs-js" role="group" aria-label="Filters"><button class="chip" data-f="active" aria-pressed="false">Active chamber</button><button class="chip" data-f="cf" aria-pressed="false">Carbon fibre</button><button class="chip" data-f="multi" aria-pressed="false">Multi-colour</button><button class="chip" data-f="four" aria-pressed="false">4 toolheads</button><button class="chip" data-f="hepa" aria-pressed="false">HEPA</button><span class="count-out" id="f-out" aria-live="polite"></span></div>
   <div class="grid">${P.map(card).join('')}</div>
 </div></section>
 </main>
-<footer class="dark foot"><p>${e(meta.footer)}</p></footer>
+<footer class="foot"><p>${e(meta.footer)}</p></footer>
 <script src="app.js" defer></script>
 </body>
 </html>
