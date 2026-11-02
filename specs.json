@@ -1,0 +1,276 @@
+{
+  "meta": {
+    "priceLabel": "as listed 28 Oct 2026, reconfirmed by official invoice",
+    "footer": "Specs from manufacturer pages. Prices unconfirmed."
+  },
+  "printers": [
+    {
+      "id": "kobra",
+      "name": "Anycubic Kobra S1 Max (Combo)",
+      "short": "Kobra S1 Max",
+      "origin": "local",
+      "version": "Combo",
+      "price": {
+        "text": "Rp 16,786,560",
+        "note": "standard"
+      },
+      "build": {
+        "x": 350,
+        "y": 350,
+        "z": 350
+      },
+      "hotendC": 350,
+      "chamberC": 65,
+      "chamberType": "active",
+      "bedC": null,
+      "speedMms": 600,
+      "travelMms": null,
+      "kinematics": "CoreXY",
+      "nozzle": "hardened-steel 0.4 mm",
+      "toolheads": 1,
+      "colours": 16,
+      "colourSystem": "ACE 2 Pro",
+      "camera": "720p AI camera",
+      "filtration": "carbon filter",
+      "hepa": false,
+      "carbonFilter": true,
+      "display": "4.3\" touchscreen",
+      "weightKg": 25.7,
+      "weightComboKg": null,
+      "powerW": 2200,
+      "powerV": 220,
+      "cfMaterials": [
+        "PLA-CF",
+        "PETG-CF",
+        "PET-CF",
+        "PA6-CF"
+      ],
+      "cfNote": null,
+      "warranty": "1 year",
+      "extras": [],
+      "standout": "Biggest local build with a heated chamber.",
+      "watchOut": [
+        "2200 W, so check the circuit."
+      ],
+      "photo": {
+        "file": "img/kobra.webp",
+        "store": null,
+        "versionShown": "Combo (ACE 2 Pro spool box visible on top)"
+      }
+    },
+    {
+      "id": "k2",
+      "name": "Creality K2 Pro (Combo)",
+      "short": "K2 Pro",
+      "origin": "local",
+      "version": "Combo",
+      "price": {
+        "text": "Rp 15,736,000",
+        "note": "standard"
+      },
+      "build": {
+        "x": 300,
+        "y": 300,
+        "z": 300
+      },
+      "hotendC": 300,
+      "chamberC": 60,
+      "chamberType": null,
+      "bedC": 110,
+      "speedMms": 600,
+      "travelMms": null,
+      "kinematics": null,
+      "nozzle": null,
+      "toolheads": 1,
+      "colours": 16,
+      "colourSystem": "CFS (4 units)",
+      "camera": null,
+      "filtration": null,
+      "hepa": null,
+      "carbonFilter": null,
+      "display": "4\" touchscreen",
+      "weightKg": 23.7,
+      "weightComboKg": null,
+      "powerW": 1300,
+      "powerV": null,
+      "cfMaterials": [
+        "PLA-CF"
+      ],
+      "cfNote": "CFS lists PLA-CF only",
+      "warranty": "up to 12 months",
+      "extras": [
+        "Auto-levelling",
+        "AI cameras",
+        "tangle detection",
+        "air purifier"
+      ],
+      "standout": "Easy, self-supervising prints.",
+      "watchOut": [
+        "Nozzle material not stated by the manufacturer (earlier shortlist: copper alloy with a hardened tip, third-party, unverified)."
+      ],
+      "photo": {
+        "file": "img/k2.webp",
+        "store": null,
+        "versionShown": "Standard printer shown (no CFS unit visible)"
+      }
+    },
+    {
+      "id": "creator5",
+      "name": "Flashforge Creator 5 Pro",
+      "short": "Creator 5 Pro",
+      "origin": "local",
+      "version": "standard",
+      "price": {
+        "text": "Rp 16,800,000",
+        "note": null
+      },
+      "build": {
+        "x": 256,
+        "y": 256,
+        "z": 256
+      },
+      "hotendC": 320,
+      "chamberC": 65,
+      "chamberType": null,
+      "bedC": 120,
+      "speedMms": 300,
+      "travelMms": 600,
+      "kinematics": null,
+      "nozzle": "hardened steel",
+      "toolheads": 4,
+      "colours": null,
+      "colourSystem": null,
+      "camera": "720p camera",
+      "filtration": "HEPA13 + carbon",
+      "hepa": true,
+      "carbonFilter": true,
+      "display": null,
+      "weightKg": 18,
+      "weightComboKg": null,
+      "powerW": 1200,
+      "powerV": null,
+      "cfMaterials": [
+        "PA-CF",
+        "PET-CF",
+        "PPS-CF"
+      ],
+      "cfNote": "and others (list not stated in full)",
+      "warranty": null,
+      "extras": [
+        "door and top-cover detection",
+        "FlashSwap independent toolheads"
+      ],
+      "standout": "Four toolheads and the best classroom air filtering.",
+      "watchOut": [
+        "More complex to maintain."
+      ],
+      "photo": {
+        "file": "img/creator5.webp",
+        "store": null,
+        "versionShown": "Single listed version (four spool holders on the side)"
+      }
+    },
+    {
+      "id": "max4",
+      "name": "QIDI Max4",
+      "short": "Max4",
+      "origin": "import",
+      "version": "standard",
+      "price": {
+        "text": "US$1,049",
+        "note": "excluding shipping, tax and warranty claims back to China"
+      },
+      "build": {
+        "x": 390,
+        "y": 390,
+        "z": 340
+      },
+      "hotendC": 370,
+      "chamberC": 65,
+      "chamberType": null,
+      "bedC": null,
+      "speedMms": 800,
+      "travelMms": null,
+      "kinematics": "CoreXY",
+      "nozzle": "bimetal",
+      "toolheads": 1,
+      "colours": null,
+      "colourSystem": null,
+      "camera": "1080p AI camera",
+      "filtration": "HEPA H12 + carbon",
+      "hepa": true,
+      "carbonFilter": true,
+      "display": "5\" touchscreen",
+      "weightKg": 40,
+      "weightComboKg": 46.5,
+      "powerW": null,
+      "powerV": null,
+      "cfMaterials": null,
+      "cfNote": null,
+      "warranty": null,
+      "extras": [],
+      "standout": "Highest-spec machine here.",
+      "watchOut": [
+        "Heavy.",
+        "Polar Cooler is a separate add-on."
+      ],
+      "photo": {
+        "file": "img/max4.webp",
+        "store": null,
+        "versionShown": "Standard printer shown"
+      }
+    },
+    {
+      "id": "plus5",
+      "name": "QIDI Plus5",
+      "short": "Plus5",
+      "origin": "import",
+      "version": "standard",
+      "price": {
+        "text": "US$749",
+        "note": "excluding shipping, tax and warranty claims back to China"
+      },
+      "build": {
+        "x": 320,
+        "y": 320,
+        "z": 300
+      },
+      "hotendC": 370,
+      "chamberC": 65,
+      "chamberType": null,
+      "bedC": null,
+      "speedMms": 600,
+      "travelMms": null,
+      "kinematics": "CoreXY",
+      "nozzle": "bimetal",
+      "toolheads": 1,
+      "colours": null,
+      "colourSystem": null,
+      "camera": "1080p AI camera",
+      "filtration": "HEPA H12 + carbon",
+      "hepa": true,
+      "carbonFilter": true,
+      "display": null,
+      "weightKg": 29,
+      "weightComboKg": null,
+      "powerW": null,
+      "powerV": null,
+      "cfMaterials": null,
+      "cfNote": null,
+      "warranty": null,
+      "extras": [
+        "QIDI Maker one-tap phone app"
+      ],
+      "standout": "Phone-to-printer one-tap app (QIDI Maker).",
+      "watchOut": [
+        "Proprietary nozzle.",
+        "Longer heat-up."
+      ],
+      "photo": {
+        "file": "img/plus5.webp",
+        "store": null,
+        "versionShown": "Standard printer shown (door badge reads PLUS5)"
+      }
+    }
+  ]
+}
