@@ -64,7 +64,7 @@ img { max-width: 100%; height: auto; display: block; }
 .tag { display: inline-flex; align-items: center; gap: var(--s-4); font-size: var(--t-14); font-weight: 600; line-height: 1; padding: var(--s-4) var(--s-8); border: 1px solid currentColor; border-radius: 4px; white-space: nowrap; }
 .tag-ok { color: var(--ok); } .tag-warn { color: var(--warn); } .tag-neutral { color: var(--ink-2); }
 .tag-accent { color: var(--ink); border-color: var(--accent); }
-.tag-accent span { color: var(--accent); }
+.tag-accent span { color: inherit; }
 .row-tags { display: inline-flex; flex-wrap: wrap; gap: var(--s-8); }
 
 /* carousel: default is a horizontal snap strip */
