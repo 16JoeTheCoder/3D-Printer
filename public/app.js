@@ -1,103 +1,102 @@
+// STJBS printer proposal: compare selection, list filters, carousel buttons, compare page.
 (() => {
-const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
-const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const raf = requestAnimationFrame;
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const MAX = 3, KEY = 'stjbs-compare';
+  const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } };
+  const save = (a) => { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch {} };
+  let sel = load().slice(0, MAX);
 
-// Reel fallback: no scroll-driven animations -> IntersectionObserver
-if (!RM && !CSS.supports('animation-timeline', 'view()')) {
-  document.documentElement.classList.add('io');
-  const io = new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle('in', e.isIntersecting)), { threshold: 0.35 });
-  $$('.slide').forEach((s) => io.observe(s));
-}
-
-// Counters
-const tween = (el, from, to, dec, ms = 900) => {
-  if (RM) { el.textContent = to.toFixed(dec); return; }
-  const t0 = performance.now();
-  const step = (t) => { const k = Math.min(1, (t - t0) / ms), v = from + (to - from) * (1 - Math.pow(1 - k, 3)); el.textContent = v.toFixed(dec); if (k < 1) raf(step); };
-  raf(step);
-};
-if (!RM) {
-  const cio = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { cio.unobserve(e.target); tween(e.target, 0, +e.target.dataset.count, +(e.target.dataset.dec || 0)); } }), { threshold: 0.6 });
-  $$('.count').forEach((c) => cio.observe(c));
-}
-
-// Tilt (pointer/touch + device orientation)
-const photos = $$('.photo'), vis = new Set();
-const setTilt = (ph, x, y) => { ph._r && cancelAnimationFrame(ph._r); ph._r = raf(() => { ph.style.setProperty('--tx', x.toFixed(3)); ph.style.setProperty('--ty', y.toFixed(3)); }); };
-if (!RM) {
-  const vio = new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? vis.add(e.target) : vis.delete(e.target))));
-  photos.forEach((ph) => {
-    vio.observe(ph);
-    ph.addEventListener('pointermove', (e) => { const r = ph.getBoundingClientRect(); setTilt(ph, ((e.clientX - r.left) / r.width - 0.5) * 2, ((e.clientY - r.top) / r.height - 0.5) * 2); });
-    ['pointerleave', 'pointercancel', 'pointerup'].forEach((t) => ph.addEventListener(t, () => setTilt(ph, 0, 0)));
-  });
-  if (matchMedia('(hover: none)').matches && 'DeviceOrientationEvent' in window) {
-    const clamp = (v) => Math.max(-1, Math.min(1, v));
-    const on = () => addEventListener('deviceorientation', (e) => { if (e.gamma == null) return; vis.forEach((ph) => setTilt(ph, clamp(e.gamma / 30), clamp((e.beta - 45) / 30))); }, { passive: true });
-    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-      const b = $('#tiltbtn'); b.hidden = false;
-      b.addEventListener('click', () => DeviceOrientationEvent.requestPermission().then((r) => { if (r === 'granted') { on(); b.hidden = true; } }).catch(() => {}));
-    } else on();
+  // ---- selection: checkboxes, tray, nav link ----
+  function syncSelection() {
+    const full = sel.length >= MAX, url = `/compare/?p=${sel.join(',')}`;
+    $$('[data-cmp]').forEach((c) => { c.hidden = false; c.checked = sel.includes(c.dataset.cmp); c.disabled = full && !c.checked; });
+    $$('[data-max]').forEach((m) => { m.hidden = !full; });
+    $$('[data-count]').forEach((n) => { n.textContent = sel.length; });
+    const nav = $('[data-compare-link]');
+    if (nav) { nav.hidden = !sel.length; nav.href = url; }
+    const tray = $('[data-tray]');
+    if (tray) tray.hidden = !sel.length;
+    $$('[data-tray-go]').forEach((a) => {
+      const ok = sel.length >= 2;
+      if (ok) { a.href = url; a.removeAttribute('aria-disabled'); a.textContent = 'Compare →'; }
+      else { a.removeAttribute('href'); a.setAttribute('aria-disabled', 'true'); a.textContent = 'Select one more'; }
+    });
   }
-}
-
-// Pins
-$$('.card').forEach((card) => {
-  const tips = $$('.tip', card), hint = $('.hint', card), pins = $$('.pin', card);
-  const close = () => { tips.forEach((t) => t.classList.remove('on')); pins.forEach((p) => p.setAttribute('aria-expanded', 'false')); hint.classList.add('on'); };
-  pins.forEach((p) => {
-    p.setAttribute('role', 'button'); p.setAttribute('aria-expanded', 'false');
-    const go = (ev) => { ev.preventDefault(); const t = document.getElementById(p.getAttribute('href').slice(1)), open = !t.classList.contains('on'); history.replaceState(null, '', location.pathname); close(); if (open) { hint.classList.remove('on'); t.classList.add('on'); p.setAttribute('aria-expanded', 'true'); } };
-    p.addEventListener('click', go);
-    p.addEventListener('keydown', (e) => { if (e.key === ' ') go(e); });
+  document.addEventListener('change', (e) => {
+    const c = e.target.closest('[data-cmp]');
+    if (!c) return;
+    sel = sel.filter((s) => s !== c.dataset.cmp);
+    if (c.checked && sel.length < MAX) sel.push(c.dataset.cmp);
+    save(sel); syncSelection();
   });
-  card.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
-});
+  addEventListener('storage', (e) => { if (e.key === KEY) { sel = load().slice(0, MAX); syncSelection(); } });
 
-// Metric race
-const rows = $$('.race li'), note = $('#race-note');
-const NOTES = { b: 'Build volume = X × Y × Z in litres.', c: 'Chamber temperature as stated by the manufacturer. Ties keep list order.', s: 'Print speed. Creator 5 Pro: 300 mm/s print (600 mm/s travel).', a: 'Filter tier by rule: HEPA13 + carbon > HEPA H12 + carbon > carbon > air purifier (type not stated).' };
-const UNIT = { b: ' L', c: ' °C', s: ' mm/s' };
-const race = (m) => {
-  const max = m === 'a' ? 4 : Math.max(...rows.map((r) => +r.dataset[m]));
-  const order = [...rows].sort((a, b) => b.dataset[m] - a.dataset[m] || a.dataset.i - b.dataset.i);
-  order.forEach((li, r) => {
-    li.classList.toggle('lead', r === 0); li.style.setProperty('--r', r); li.style.setProperty('--v', +li.dataset[m] / max);
-    const val = $('.val', li);
-    if (m === 'a') val.textContent = li.dataset.at;
-    else { const to = +li.dataset[m], from = parseFloat(val.textContent) || 0, dec = m === 'b' ? 1 : 0, u = UNIT[m]; if (RM || !/^[\d.]+/.test(val.textContent)) val.textContent = to.toFixed(dec) + u; else tween({ set textContent(v) { val.textContent = v + u; } }, from, to, dec, 700); }
-  });
-  note.textContent = `${NOTES[m]} Prices are never ranked. Top: ${order[0].querySelector('.rn').textContent}.`;
-};
-$$('[data-m]').forEach((b) => b.addEventListener('click', () => { $$('[data-m]').forEach((x) => x.setAttribute('aria-pressed', x === b)); race(b.dataset.m); }));
+  // ---- list filters: All / Local / Import ----
+  const filters = $('.filters');
+  if (filters) {
+    filters.hidden = false;
+    filters.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-filter]');
+      if (!b) return;
+      $$('[data-filter]', filters).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      $$('.list tbody tr').forEach((tr) => { tr.hidden = b.dataset.filter !== 'all' && tr.dataset.tier !== b.dataset.filter; });
+    });
+  }
 
-// Filters + picker
-const cards = $$('.card'), fout = $('#f-out');
-const RULE = { big: 'build volume of 30 L or more', safe: 'HEPA filter fitted', colour: 'multi-colour system stated (16 colours or 4 toolheads)' };
-let pick = '';
-const update = () => {
-  const fs = $$('[data-f][aria-pressed=true]').map((b) => b.dataset.f);
-  let n = 0;
-  cards.forEach((c) => {
-    const ok = fs.every((f) => c.dataset[f] === '1'), pk = !pick || c.dataset[pick] === '1';
-    c.classList.toggle('dim', !(ok && pk)); c.classList.toggle('match', !!pick && pk && ok); if (ok) n++;
-  });
-  fout.textContent = `${n} of ${cards.length} shown`;
-  const out = $('#pick-out');
-  if (!pick) out.textContent = 'Pick one. Matching is by spec rules only.';
-  else { const hits = cards.filter((c) => c.dataset[pick] === '1'); out.innerHTML = `Rule: ${RULE[pick]}. Matches: ` + (hits.length ? hits.map((c) => `<a href="#${c.id}">${c.querySelector('h3').textContent.replace(' (Combo)', '')}</a>`).join(', ') : 'none') + '.'; }
-};
-$$('[data-f]').forEach((b) => b.addEventListener('click', () => { b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true'); update(); }));
-$$('[data-p]').forEach((b) => b.addEventListener('click', () => { pick = pick === b.dataset.p ? '' : b.dataset.p; $$('[data-p]').forEach((x) => x.setAttribute('aria-pressed', x.dataset.p === pick)); update(); }));
-update();
+  // ---- carousel: Prev / Next and arrow keys (snap-strip mode only) ----
+  const track = $('.car-track');
+  if (track) {
+    const controls = $('.car-controls');
+    const pinned = () => getComputedStyle(controls).display === 'none';
+    controls.hidden = false;
+    const go = (d) => { if (!pinned()) track.scrollBy({ left: d * track.clientWidth }); };
+    controls.addEventListener('click', (e) => { const b = e.target.closest('[data-car]'); if (b) go(+b.dataset.car); });
+    track.addEventListener('keydown', (e) => { const d = { ArrowLeft: -1, ArrowRight: 1 }[e.key]; if (d && !pinned()) { e.preventDefault(); go(d); } });
+  }
 
-// View Transitions morph for details (plain <details> without support)
-$$('details.spec summary').forEach((s) => s.addEventListener('click', (e) => {
-  if (!document.startViewTransition || RM) return;
-  e.preventDefault();
-  const d = s.parentNode, c = d.closest('.card');
-  c.style.viewTransitionName = 'card';
-  document.startViewTransition(() => { d.open = !d.open; }).finished.finally(() => { c.style.viewTransitionName = ''; });
-}));
+  // ---- nav: underline the section in view on the home page ----
+  const navLinks = $$('[data-nav]').filter((a) => a.hash && document.getElementById(a.hash.slice(1)));
+  if (navLinks.length && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+      if (!en.isIntersecting) return;
+      navLinks.forEach((a) => (a.hash === `#${en.target.id}` ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
+    }), { rootMargin: '-40% 0px -55% 0px' });
+    navLinks.forEach((a) => io.observe(document.getElementById(a.hash.slice(1))));
+  }
+
+  // ---- compare page ----
+  const root = $('[data-compare-root]');
+  if (root) {
+    fetch('/data/specs.json').then((r) => r.json()).then((data) => {
+      const all = Object.fromEntries(data.printers.map((p) => [p.slug, p]));
+      const fromUrl = () => [...new Set((new URLSearchParams(location.search).get('p') || '').split(','))].filter((s) => all[s]).slice(0, MAX);
+      let cols = fromUrl();
+      const render = () => {
+        history.replaceState(null, '', cols.length ? `?p=${cols.join(',')}` : location.pathname);
+        if (cols.length < 2) {
+          const pick = cols.length ? `<p>Only one printer is selected. Add another below, or go back to the list.</p>` : '<p>No printers selected.</p>';
+          root.innerHTML = `${pick}${adder()}<p><a href="/#printers">Go to the printer list</a></p>`;
+          return;
+        }
+        const ps = cols.map((s) => all[s]);
+        const rows = Object.keys(ps[0].rows).filter((l) => ps.some((p) => p.rows[l] != null));
+        root.innerHTML = `<div class="cmp-wrap"><table class="cmp-table">
+          <caption class="sr">Side-by-side comparison</caption>
+          <thead><tr><td></td>${ps.map((p) => `<th scope="col">${p.photo ? `<img src="/${p.photo}" width="160" height="160" alt="">` : ''}<strong>${esc(p.name)}</strong>
+            <span class="cmp-col-actions"><a href="/printers/${p.slug}/">View more →</a><button type="button" class="btn btn-secondary" data-remove="${p.slug}">Remove<span class="sr"> ${esc(p.name)}</span></button></span></th>`).join('')}</tr></thead>
+          <tbody>${rows.map((l) => {
+            const vals = ps.map((p) => p.rows[l] ?? 'Not published');
+            return `<tr class="${new Set(vals).size > 1 ? 'differs' : ''}"><th scope="row">${l}</th>${vals.map((v, i) => `<td data-name="${esc(ps[i].name)}">${esc(v)}</td>`).join('')}</tr>`;
+          }).join('')}</tbody></table></div>${cols.length < MAX ? adder() : ''}`;
+      };
+      const adder = () => `<div class="cmp-add"><label for="cmp-add">${cols.length >= 2 ? 'Add a third printer' : 'Add a printer'}</label>
+        <select id="cmp-add"><option value="">Choose…</option>${data.printers.filter((p) => !cols.includes(p.slug)).map((p) => `<option value="${p.slug}">${esc(p.name)}</option>`).join('')}</select></div>`;
+      root.addEventListener('change', (e) => { if (e.target.id === 'cmp-add' && e.target.value) { cols.push(e.target.value); render(); $('#cmp-add')?.focus(); } });
+      root.addEventListener('click', (e) => { const b = e.target.closest('[data-remove]'); if (b) { cols = cols.filter((s) => s !== b.dataset.remove); render(); $('#cmp-add')?.focus(); } });
+      render();
+    }).catch(() => { root.innerHTML = '<p>The comparison data could not be loaded. <a href="/#printers">Go to the printer list</a>.</p>'; });
+  }
+
+  syncSelection();
 })();
