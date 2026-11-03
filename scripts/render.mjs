@@ -1,8 +1,7 @@
 // Build: node scripts/render.mjs
 // Reads specs.json, checks it against the vector models, writes every page in public/.
 import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
-import { check } from './check.mjs';
-import { PRINTERS as MODELS, FEATURES } from '../public/models/printer-specs.js';
+import { check, PRINTERS as MODELS, FEATURES } from './check.mjs';
 
 const root = new URL('../', import.meta.url);
 const specs = JSON.parse(readFileSync(new URL('specs.json', root)));

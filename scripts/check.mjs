@@ -1,6 +1,9 @@
 // Fails if specs.json and public/models/printer-specs.js disagree on build volume,
 // chamber or hotend temperature for the modelled printers. Run by render.mjs.
-import { PRINTERS } from '../public/models/printer-specs.js';
+import { readFileSync } from 'node:fs';
+// printer-specs.js is browser ESM with no package.json "type"; load it as a data URL so any Node version accepts it.
+const src = readFileSync(new URL('../public/models/printer-specs.js', import.meta.url), 'utf8');
+export const { PRINTERS, FEATURES } = await import(`data:text/javascript,${encodeURIComponent(src)}`);
 
 export function check(specs) {
   const errors = [], notes = [];
@@ -18,7 +21,6 @@ export function check(specs) {
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const { readFileSync } = await import('node:fs');
   const { errors, notes } = check(JSON.parse(readFileSync(new URL('../specs.json', import.meta.url))));
   notes.forEach((n) => console.log('note:', n));
   errors.forEach((e) => console.error('error:', e));
