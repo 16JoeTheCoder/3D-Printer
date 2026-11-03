@@ -51,7 +51,7 @@ img { max-width: 100%; height: auto; display: block; }
 .nav li + li { margin: 0; }
 .nav a:not(.brand) { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--t-16); color: var(--ink); text-decoration: none; white-space: nowrap; }
 .nav a[aria-current] { text-decoration: underline 2px var(--accent); text-underline-offset: 8px; }
-@media (max-width: 61.99rem) { .nav ul { order: 3; width: 100%; } .site-head { position: static; } html { scroll-padding-top: var(--s-16); } }
+@media (max-width: 61.99rem) { .nav ul { order: 3; width: 100%; flex-wrap: wrap; overflow: visible; } .site-head { position: static; } html { scroll-padding-top: var(--s-16); } }
 
 /* buttons */
 .btn { display: inline-flex; align-items: center; gap: var(--s-8); min-height: 44px; padding: 0 var(--s-16); border: 2px solid var(--brand); border-radius: 6px; font: 600 var(--t-16)/1 var(--sans); text-decoration: none; cursor: pointer; }
@@ -69,7 +69,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* carousel: default is a horizontal snap strip */
 .car { position: relative; }
-.car-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+.car-track { position: relative; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
 .car-track::-webkit-scrollbar { display: none; }
 .slide { flex: 0 0 100%; scroll-snap-align: start; display: grid; gap: var(--s-24); align-items: center; padding: var(--s-32) max(var(--gutter), calc((100vw - var(--max)) / 2)); }
 .slide-meta { display: flex; gap: var(--s-12); align-items: center; font-size: var(--t-14); color: var(--ink-2); }
@@ -80,6 +80,8 @@ img { max-width: 100%; height: auto; display: block; }
 .stats dt { font-size: var(--t-14); color: var(--ink-2); }
 .stats dd { margin: 0; font-size: var(--t-28); font-weight: 600; }
 .slide-price { display: grid; }
+.slide-price .price { font: 600 var(--t-28)/1.2 var(--sans); }
+.slide > * { min-width: 0; }
 .slide-photo { width: 100%; max-width: 560px; aspect-ratio: 1; object-fit: contain; justify-self: center; }
 .car-snap { display: none; }
 .car-controls { display: flex; gap: var(--s-12); padding-bottom: var(--s-24); }
@@ -206,7 +208,7 @@ img { max-width: 100%; height: auto; display: block; }
 .pp-nav { display: flex; justify-content: space-between; gap: var(--s-16); flex-wrap: wrap; margin-top: var(--s-64); padding-top: var(--s-24); border-top: 1px solid var(--rule); }
 
 /* compare */
-.cmp-wrap { overflow-x: auto; margin-top: var(--s-24); }
+.cmp-wrap { position: relative; overflow-x: auto; margin-top: var(--s-24); }
 .cmp-table { border-collapse: separate; border-spacing: 0; min-width: 100%; }
 .cmp-table th, .cmp-table td { text-align: left; vertical-align: top; padding: var(--s-16); border-bottom: 1px solid var(--rule); min-width: 14rem; font-weight: 400; font-size: var(--t-16); }
 .cmp-table tbody th { position: sticky; left: 0; background: var(--paper); font-weight: 600; min-width: 9rem; }
